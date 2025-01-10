@@ -1,71 +1,52 @@
-import React from 'react';
-import logo from '../assets/imagenes/sinFondo-logo-temporal-blanco.png'; // Ruta al logo
+import React from "react";
+import logo from "../assets/imagenes/sinFondo-logo-temporal-blanco.png"; // Ruta del logo
+import "./Header.css"; // Archivo CSS para estilos del encabezado
 
 function Header() {
   return (
-    <header style={styles.header}>
-      <div style={styles.logoContainer}>
-        <img src={logo} alt="Logo ARCHVIZ" style={styles.logo} />
+    <header className="header">
+      <div className="logo-container">
+        <img src={logo} alt="Logo ARCHVIZ" className="logo" />
       </div>
-      <nav style={styles.nav}>
-        <ul style={styles.navList}>
-          <li><a href="#proyectos" style={styles.navLink}>Proyectos</a></li>
-          <li><a href="#recursos" style={styles.navLink}>Recursos</a></li>
-          <li><a href="#cursos" style={styles.navLink}>Cursos</a></li>
-          <li><a href="#videos" style={styles.navLink}>Videos</a></li>
-          <li><a href="#nosotros" style={styles.navLink}>Nosotros</a></li>
+      <nav className="nav">
+        <ul className="nav-list">
+          <li className="nav-item">
+            <a href="/" className="nav-link">
+              Inicio
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="/projects" className="nav-link">
+              Proyectos
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="/resources" className="nav-link">
+              Recursos
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="/courses" className="nav-link">
+              Cursos
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="/videos" className="nav-link">
+              Videos
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="/about" className="nav-link">
+              Nosotros
+            </a>
+          </li>
         </ul>
       </nav>
-      <button style={styles.loginButton}>Iniciar sesión</button>
+      <div className="login-container">
+        <button className="login-button">Iniciar Sesión</button>
+      </div>
     </header>
   );
 }
-
-const styles = {
-  header: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: '1rem 2rem',
-    backgroundColor: '#000',
-    color: '#fff',
-    position: 'relative',
-    zIndex: 1000,
-  },
-  logoContainer: {
-    flex: '0 0 auto',
-  },
-  logo: {
-    height: '40px',
-  },
-  nav: {
-    flexGrow: 1,
-    display: 'flex',
-    justifyContent: 'center', // Centra los botones
-    alignItems: 'center',
-  },
-  navList: {
-    display: 'flex',
-    listStyle: 'none',
-    padding: 0,
-    margin: 0,
-  },
-  navLink: {
-    margin: '0 1rem',
-    textDecoration: 'none',
-    color: '#fff',
-    fontSize: '1rem',
-    position: 'relative',
-  },
-  loginButton: {
-    backgroundColor: '#fff',
-    color: '#000',
-    border: 'none',
-    padding: '0.5rem 1rem',
-    fontSize: '1rem',
-    cursor: 'pointer',
-    borderRadius: '5px',
-  },
-};
 
 export default Header;
