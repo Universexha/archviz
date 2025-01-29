@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Header from '../components/Header';
 import '../App.css';
 
 function Home() {
@@ -18,7 +17,6 @@ function Home() {
         </div>
       ) : (
         <>
-          <Header />
           <main className="main-content">
             <p className="intro-text">Descubre nuevas posibilidades en cada proyecto</p>
             <h1 className="main-title">Transforma Ideas en Realidad</h1>
@@ -173,14 +171,7 @@ function Home() {
                 <p className="contact-text">Obtén una cotización en <a href="mailto:hello@archviz.com" className="contact-link">hello@archviz.com</a></p>
                 <button className="contact-button">Habla con nosotros</button>
               </div>
-              <div className="contact-box">
-                <h3 className="contact-title">Conéctate con nosotros y aprende</h3>
-                <div className="social-icons">
-                  <a href="#" className="icon">YouTube</a>
-                  <a href="#" className="icon">Instagram</a>
-                  <a href="#" className="icon">Pinterest</a>
-                </div>
-              </div>
+
               <div className="contact-box">
                 <h3 className="contact-title">Suscríbete a nuestro boletín</h3>
                 <p className="contact-text">¿Qué es lo que más te interesa?</p>

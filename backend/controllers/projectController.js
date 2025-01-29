@@ -1,6 +1,5 @@
 const Project = require('../models/project');
 
-// Controlador para añadir un nuevo proyecto
 const addProject = async (req, res) => {
     try {
         const { nombre, descripcion, cliente, estado } = req.body;
@@ -28,7 +27,6 @@ const addProject = async (req, res) => {
     }
 };
 
-// Controlador para obtener todos los proyectos
 const getProjects = async (req, res) => {
     try {
         const projects = await Project.find();

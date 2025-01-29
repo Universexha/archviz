@@ -1,38 +1,38 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
-const projectRoutes = require('./routes/projects'); // Asegúrate de que la ruta sea correcta
+const cookieParser = require('cookie-parser'); // Para manejar cookies
+const dotenv = require('dotenv'); // Para manejar variables de entorno
+const mongoose = require('mongoose'); // Para conectarte a MongoDB
+const authRoutes = require('./routes/auth'); // Importar las rutas de autenticación
+const authenticate = require('./middlewares/authenticate'); // Importar middleware de autenticación
 
-// Cargar variables de entorno
-dotenv.config();
+dotenv.config(); // Cargar variables de entorno desde .env
 
-// Inicializar la aplicación
 const app = express();
 
-// Middlewares
-app.use(cors()); // Permitir solicitudes de otros orígenes
-app.use(bodyParser.json()); // Analizar JSON en las solicitudes
-app.use(bodyParser.urlencoded({ extended: true })); // Analizar datos en formularios
+// Configuración de middlewares globales
+app.use(express.json()); // Permite parsear JSON en las solicitudes
+app.use(cookieParser()); // Habilita el manejo de cookies
+app.use(express.urlencoded({ extended: true }));
 
-// Conexión a la base de datos
+// Conexión a la base de datos MongoDB
 mongoose
-  .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Conectado a MongoDB'))
-  .catch((error) => console.error('Error al conectar a MongoDB:', error));
+    .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('Conectado a MongoDB'))
+    .catch((error) => console.error('Error al conectar a MongoDB:', error));
 
-// Rutas
-app.use('/uploads', express.static('uploads')); // Servir archivos estáticos de la carpeta uploads
-app.use('/projects', projectRoutes); // Rutas para proyectos
+// Registro de rutas públicas
+app.use('/auth', authRoutes); // Rutas relacionadas con autenticación
 
-// Ruta por defecto
+// Ejemplo de ruta protegida
+app.get('/dashboard', authenticate, (req, res) => {
+    res.json({ message: `Bienvenido ${req.user.role}.` });
+});
+
+// Ruta inicial (de prueba)
 app.get('/', (req, res) => {
-  res.send('Bienvenido al servidor de ARCHVIZ');
+    res.send('Bienvenido al servidor de ARCHVIZ');
 });
 
-// Puerto y servidor
+// Configuración e inicio del servidor
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`);
-});
+app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));

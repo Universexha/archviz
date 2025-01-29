@@ -1,8 +1,15 @@
 import React from "react";
-import logo from "../assets/imagenes/sinFondo-logo-temporal-blanco.png"; // Ruta del logo
+import { useNavigate } from "react-router-dom"; // Importar el hook para navegación
+import logo from "../assets/imagenes/logos/sinFondo-logo-temporal-blanco.png"; // Ruta del logo
 import "./Header.css"; // Archivo CSS para estilos del encabezado
 
 function Header() {
+  const navigate = useNavigate(); // Hook para manejar la navegación
+
+  const handleLoginClick = () => {
+    navigate("/login"); // Cambiar a la ruta de inicio de sesión
+  };
+
   return (
     <header className="header">
       <div className="logo-container">
@@ -43,7 +50,9 @@ function Header() {
         </ul>
       </nav>
       <div className="login-container">
-        <button className="login-button">Iniciar Sesión</button>
+        <button className="login-button" onClick={handleLoginClick}>
+          Iniciar Sesión
+        </button>
       </div>
     </header>
   );

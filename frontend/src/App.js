@@ -1,20 +1,31 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
-import "./App.css";
+import LoginRegister from "./pages/LoginRegister";
+import Header from "./components/Header";
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/projects" element={<Projects />} />
-        </Routes>
-      </div>
+      <Routes>
+        {/* Ruta sin Header */}
+        <Route path="/login" element={<LoginRegister />} />
+
+        {/* Rutas con Header */}
+        <Route
+          path="*"
+          element={
+            <>
+              <Header />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/projects" element={<Projects />} />
+              </Routes>
+            </>
+          }
+        />
+      </Routes>
     </Router>
   );
 }

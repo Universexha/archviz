@@ -1,0 +1,29 @@
+.footer {
+    background-color: #111;
+    color: #fff;
+    padding: 2rem 1rem;
+    text-align: center;
+  }
+  
+  .footer .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .footer .icon img {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease;
+  }
+  
+  .footer .icon img:hover {
+    transform: scale(1.2);
+  }
+  
+  .footer-bottom {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #aaa;
+  }
+  
