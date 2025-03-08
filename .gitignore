@@ -7,15 +7,45 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Dependencias
+node_modules/
+**/node_modules/
 
-# Editor directories and files
+# Builds y compilaciones
+dist/
+dist-ssr/
+build/
+.out/
+.next/
+.cache/
+
+# Variables de entorno y configuración local
+*.local
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env.*.local
+
+# Archivos específicos de editores de código
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
+
+# Prisma (ORM en Backend)
+prisma/migrations/
+
+# Dependencias generadas
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Archivos de TypeScript que no son necesarios
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# Archivos del sistema operativo
 .DS_Store
 *.suo
 *.ntvs*
