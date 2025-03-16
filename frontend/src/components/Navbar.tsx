@@ -2,17 +2,17 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <nav className="bg-gray-900 text-white py-4 px-6 flex justify-between items-center">
-      <div className="text-2xl font-bold">V</div>
-      <ul className="flex space-x-6">
-        <li><Link to="/" className="hover:text-gray-400">Inicio</Link></li>
-        <li><Link to="/proyectos" className="hover:text-gray-400">Proyectos</Link></li>
-        <li><Link to="/recorrido" className="hover:text-gray-400">Recorrido 3D</Link></li>
-      </ul>
+    <nav className="bg-gray-900 text-white p-4 flex justify-between items-center">
+      <h1 className="text-xl font-bold">ARCHVIZ</h1>
+      <div className="flex gap-4">
+        <Link to="/" className="hover:underline">Inicio</Link>
+        <Link to="/proyectos" className="hover:underline">Proyectos</Link>
+        <Link to="/admin" className="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600">
+          Panel de Control
+        </Link>
+      </div>
     </nav>
   );
 };
 
 export default Navbar;
-
-  
