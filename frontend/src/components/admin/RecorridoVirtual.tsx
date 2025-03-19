@@ -6,16 +6,28 @@ interface Hostspot {
   target: number | null;
 }
 
-const RecorridoVirtual: React.FC = () => {
-  const [recorridoVirtual, setRecorridoVirtual] = useState<File[]>([]);
-  const [previewRecorrido, setPreviewRecorrido] = useState<string[]>([]);
-  const [hostspots, setHostspots] = useState<{ [key: number]: Hostspot[] }>({});
+interface RecorridoVirtualProps {
+  recorridoVirtual: File[];
+  previewRecorrido: string[];
+  hostspots: { [key: number]: Hostspot[] };
+  setRecorridoVirtual: (recorridoVirtual: File[]) => void;
+  setPreviewRecorrido: (previewRecorrido: string[]) => void;
+  setHostspots: (hostspots: { [key: number]: Hostspot[] }) => void;
+}
 
+const RecorridoVirtual: React.FC<RecorridoVirtualProps> = ({
+  recorridoVirtual,
+  previewRecorrido,
+  hostspots,
+  setRecorridoVirtual,
+  setPreviewRecorrido,
+  setHostspots,
+}) => {
   // Manejo de selección de archivos para el recorrido virtual
   const handleRecorridoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const newFiles = Array.from(e.target.files);
-      const newPreviews = newFiles.map(file => URL.createObjectURL(file));
+      const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
 
       setRecorridoVirtual([...recorridoVirtual, ...newFiles]);
       setPreviewRecorrido([...previewRecorrido, ...newPreviews]);
@@ -87,15 +99,15 @@ const RecorridoVirtual: React.FC = () => {
       <div className="flex flex-wrap gap-4 mt-2">
         {previewRecorrido.map((src, imgIndex) => (
           <div key={imgIndex} className="relative border rounded p-2">
-            <img 
-              src={src} 
-              alt={`Recorrido ${imgIndex}`} 
-              className="w-40 h-40 object-cover cursor-pointer" 
+            <img
+              src={src}
+              alt={`Recorrido ${imgIndex}`}
+              className="w-40 h-40 object-cover cursor-pointer"
               onClick={(e) => handleAddHostspot(imgIndex, e)}
             />
-            <button 
-              type="button" 
-              onClick={() => removeRecorridoImage(imgIndex)} 
+            <button
+              type="button"
+              onClick={() => removeRecorridoImage(imgIndex)}
               className="absolute top-0 right-0 bg-red-500 text-white px-1 rounded"
             >
               X
@@ -135,7 +147,13 @@ const RecorridoVirtual: React.FC = () => {
               className="w-40 h-40 object-cover cursor-pointer"
               onClick={(e) => handleAddHostspot(imgIndex, e)}
             />
-            <button type="button" onClick={() => removeRecorridoImage(imgIndex)} className="absolute top-0 right-0 bg-red-500 text-white px-1 rounded">X</button>
+            <button
+              type="button"
+              onClick={() => removeRecorridoImage(imgIndex)}
+              className="absolute top-0 right-0 bg-red-500 text-white px-1 rounded"
+            >
+              X
+            </button>
           </div>
         ))}
       </div>

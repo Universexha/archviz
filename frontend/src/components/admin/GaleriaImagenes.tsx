@@ -9,19 +9,30 @@ interface GaleriaImagenesProps {
 }
 
 const GaleriaImagenes: React.FC<GaleriaImagenesProps> = ({ galeria, previewGaleria, setGaleria, setPreviewGaleria }) => {
+  
   // Manejo de selección de archivos para la galería
   const handleGaleriaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const newFiles = Array.from(e.target.files);
-      const newPreviews = newFiles.map(file => URL.createObjectURL(file));
+      const newFiles: File[] = Array.from(e.target.files);
 
-      setGaleria([...galeria, ...newFiles]);
+      // Filtrar archivos duplicados
+      const filteredFiles = newFiles.filter(
+        (file) => !galeria.some((existingFile) => existingFile.name === file.name)
+      );
+
+      // Crear URLs de previsualización seguras
+      const newPreviews = filteredFiles.map((file) => URL.createObjectURL(file));
+
+      setGaleria([...galeria, ...filteredFiles]);
       setPreviewGaleria([...previewGaleria, ...newPreviews]);
     }
   };
 
   // Eliminar imagen de la galería
   const removeGaleriaImage = (index: number) => {
+    // Revocar URL para liberar memoria
+    URL.revokeObjectURL(previewGaleria[index]);
+
     const updatedGaleria = galeria.filter((_, i) => i !== index);
     const updatedPreviews = previewGaleria.filter((_, i) => i !== index);
 
@@ -35,7 +46,7 @@ const GaleriaImagenes: React.FC<GaleriaImagenesProps> = ({ galeria, previewGaler
       <label className="font-semibold">Galería de Imágenes (Opcional):</label>
       <input
         type="file"
-        accept=".jpg, .png, .jpeg"
+        accept=".jpg, .png, .jpeg, .gif, .webp"
         multiple
         onChange={handleGaleriaChange}
         className="border p-2 rounded"

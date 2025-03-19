@@ -160,56 +160,55 @@ const AdminPanel = () => {
       <FormularioGeneral tipo={tipo} formData={formData} setFormData={setFormData} />
 
       {/* Galería de imágenes */}
-      <GaleriaImagenes 
-        galeria={formData.galeria} 
-        previewGaleria={formData.previewGaleria} 
-        setGaleria={(galeria) => setFormData({ ...formData, galeria })} 
-        setPreviewGaleria={(previewGaleria) => setFormData({ ...formData, previewGaleria })} 
+      <GaleriaImagenes
+        galeria={formData.galeria}
+        previewGaleria={formData.previewGaleria}
+        setGaleria={(galeria) => setFormData({ ...formData, galeria })}
+        setPreviewGaleria={(previewGaleria) => setFormData({ ...formData, previewGaleria })}
       />
 
       {/* Secciones adicionales solo para proyectos */}
       {tipo === "proyecto" && (
         <>
-          <CategoriaProyecto 
-            categoria={formData.categoria} 
-            otraCategoria={formData.otraCategoria} 
-            setCategoria={(categoria) => setFormData({ ...formData, categoria })} 
-            setOtraCategoria={(otraCategoria) => setFormData({ ...formData, otraCategoria })} 
+          <CategoriaProyecto
+            categoria={formData.categoria}
+            otraCategoria={formData.otraCategoria}
+            setCategoria={(categoria) => setFormData({ ...formData, categoria })}
+            setOtraCategoria={(otraCategoria) => setFormData({ ...formData, otraCategoria })}
           />
 
           <label className="font-semibold">Área del Proyecto (m²):</label>
-          <input 
-            type="number" 
-            name="areaProyecto" 
+          <input
+            type="number"
+            name="areaProyecto"
             value={formData.areaProyecto}
-            onChange={(e) => setFormData({ ...formData, areaProyecto: Number(e.target.value) })}
-            className="border p-2 rounded" 
-            required 
+            onChange={(e) => {
+              const value = Number(e.target.value);
+              if (value >= 0) setFormData({ ...formData, areaProyecto: value });
+            }}
+            className="border p-2 rounded"
+            required
           />
 
-          <ListaDinamica 
-            titulo="Materiales destacados" 
-            items={formData.materiales} 
-            setItems={(items) => setFormData({ ...formData, materiales: items })} 
+          <ListaDinamica
+            titulo="Materiales destacados"
+            items={formData.materiales}
+            setItems={(items) => setFormData({ ...formData, materiales: items })}
           />
 
-          <ListaDinamica 
-            titulo="Colaboradores o equipos" 
-            items={formData.colaboradores} 
-            setItems={(items) => setFormData({ ...formData, colaboradores: items })} 
-          />
-
-          <RecorridoVirtual recorridoVirtual={formData.recorridoVirtual} previewRecorrido={formData.previewRecorrido} hostspots={formData.hostspots} 
-            setRecorridoVirtual={(recorridoVirtual) => setFormData({ ...formData, recorridoVirtual })} 
-            setPreviewRecorrido={(previewRecorrido) => setFormData({ ...formData, previewRecorrido })} 
-            setHostspots={(hostspots) => setFormData({ ...formData, hostspots })} 
+          <ListaDinamica
+            titulo="Colaboradores o equipos"
+            items={formData.colaboradores}
+            setItems={(items) => setFormData({ ...formData, colaboradores: items })}
           />
 
           <EstadoProyecto estado={formData.estado} setEstado={(estado) => setFormData({ ...formData, estado })} />
         </>
       )}
 
-      <button type="button" onClick={handleSubmit} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Subir {tipo}</button>
+      <button type="button" onClick={handleSubmit} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+        Subir {tipo}
+      </button>
     </div>
   );
 };
