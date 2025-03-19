@@ -1,9 +1,14 @@
 import { useState } from "react";
 
-const GaleriaImagenes: React.FC = () => {
-  const [galeria, setGaleria] = useState<File[]>([]);
-  const [previewGaleria, setPreviewGaleria] = useState<string[]>([]);
+// Definir interfaz para las props
+interface GaleriaImagenesProps {
+  galeria: File[];
+  previewGaleria: string[];
+  setGaleria: (galeria: File[]) => void;
+  setPreviewGaleria: (previewGaleria: string[]) => void;
+}
 
+const GaleriaImagenes: React.FC<GaleriaImagenesProps> = ({ galeria, previewGaleria, setGaleria, setPreviewGaleria }) => {
   // Manejo de selección de archivos para la galería
   const handleGaleriaChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -30,7 +35,7 @@ const GaleriaImagenes: React.FC = () => {
       <label className="font-semibold">Galería de Imágenes (Opcional):</label>
       <input
         type="file"
-        accept=".jpg"
+        accept=".jpg, .png, .jpeg"
         multiple
         onChange={handleGaleriaChange}
         className="border p-2 rounded"

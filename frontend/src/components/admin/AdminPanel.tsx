@@ -13,32 +13,56 @@ const supabase = createClient(
   import.meta.env.VITE_SUPABASE_ANON_KEY!
 );
 
+interface Hotspots {
+  [key: number]: { x: number; y: number; target: number | null }[];
+}
+
+interface FormDataState {
+  nombre: string;
+  descripcionCorta: string;
+  descripcionCompleta: string;
+  imagenPrincipal: File | null;
+  previewImagenPrincipal: string;
+  galeria: File[];
+  previewGaleria: string[];
+  categoria: string;
+  otraCategoria: string;
+  areaProyecto: number;
+  materiales: string[];
+  colaboradores: string[];
+  estado: string;
+  visibilidad: string;
+  recorridoVirtual: File[];
+  previewRecorrido: string[];
+  hostspots: Hotspots;
+}
+
 const AdminPanel = () => {
-  const [tipo, setTipo] = useState("proyecto");
-  const [formData, setFormData] = useState({
+  const [tipo, setTipo] = useState<"proyecto" | "recurso" | "curso">("proyecto");
+  const [formData, setFormData] = useState<FormDataState>({
     nombre: "",
     descripcionCorta: "",
     descripcionCompleta: "",
-    imagenPrincipal: null as File | null,
+    imagenPrincipal: null,
     previewImagenPrincipal: "",
-    galeria: [] as File[],
-    previewGaleria: [] as string[],
+    galeria: [],
+    previewGaleria: [],
     categoria: "",
     otraCategoria: "",
-    areaProyecto: "",
-    materiales: [] as string[],
-    colaboradores: [] as string[],
+    areaProyecto: 0,
+    materiales: [],
+    colaboradores: [],
     estado: "",
     visibilidad: "publico",
-    recorridoVirtual: [] as File[],
-    previewRecorrido: [] as string[],
-    hostspots: {} as { [key: number]: { x: number; y: number; target: number | null }[] },
+    recorridoVirtual: [],
+    previewRecorrido: [],
+    hostspots: {},
   });
 
   // Función para subir imágenes a Supabase Storage
-  const uploadImageToSupabase = async (file: File, folder: string) => {
+  const uploadImageToSupabase = async (file: File, folder: string): Promise<string | null> => {
     const filePath = `${folder}/${Date.now()}-${file.name}`;
-    const { data, error } = await supabase.storage
+    const { error } = await supabase.storage
       .from(import.meta.env.VITE_SUPABASE_STORAGE_BUCKET!)
       .upload(filePath, file);
 
@@ -82,25 +106,27 @@ const AdminPanel = () => {
     }
 
     // Crear objeto FormData para enviar archivos
-    const formDataToSend = new FormData();
-    formDataToSend.append("nombre", formData.nombre);
-    formDataToSend.append("descripcionCorta", formData.descripcionCorta);
-    formDataToSend.append("descripcionCompleta", formData.descripcionCompleta);
-    formDataToSend.append("categoria", formData.categoria);
-    formDataToSend.append("otraCategoria", formData.otraCategoria);
-    formDataToSend.append("areaProyecto", formData.areaProyecto);
-    formDataToSend.append("estado", formData.estado);
-    formDataToSend.append("imagenPrincipal", imagenPrincipalUrl);
-    galeriaUrls.forEach((url) => formDataToSend.append("galeria", url));
-    recorridoVirtualUrls.forEach((url) => formDataToSend.append("recorridoVirtual", url));
-    formDataToSend.append("materiales", JSON.stringify(formData.materiales));
-    formDataToSend.append("colaboradores", JSON.stringify(formData.colaboradores));
-    formDataToSend.append("hostspots", JSON.stringify(formData.hostspots));
+    const formDataToSend = {
+      nombre: formData.nombre,
+      descripcionCorta: formData.descripcionCorta,
+      descripcionCompleta: formData.descripcionCompleta,
+      categoria: formData.categoria,
+      otraCategoria: formData.otraCategoria,
+      areaProyecto: formData.areaProyecto,
+      estado: formData.estado,
+      imagenPrincipal: imagenPrincipalUrl, // URL de la imagen subida
+      galeria: galeriaUrls, // URLs de imágenes de la galería
+      materiales: formData.materiales,
+      colaboradores: formData.colaboradores,
+      recorridoVirtual: recorridoVirtualUrls,
+      hostspots: formData.hostspots,
+    };
 
     try {
       const response = await fetch("http://localhost:3001/proyectos/crear", {
         method: "POST",
-        body: formDataToSend, // Enviamos como FormData en lugar de JSON
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formDataToSend),
       });
 
       if (!response.ok) {
@@ -122,7 +148,7 @@ const AdminPanel = () => {
       <label className="font-semibold">Selecciona qué deseas subir:</label>
       <select
         value={tipo}
-        onChange={(e) => setTipo(e.target.value)}
+        onChange={(e) => setTipo(e.target.value as "proyecto" | "recurso" | "curso")}
         className="border p-2 rounded mb-4 w-full"
       >
         <option value="proyecto">Proyecto</option>
@@ -156,10 +182,7 @@ const AdminPanel = () => {
             type="number" 
             name="areaProyecto" 
             value={formData.areaProyecto}
-            onChange={(e) => {
-              const value = Number(e.target.value);
-              if (value >= 0) setFormData({ ...formData, areaProyecto: value });
-            }} 
+            onChange={(e) => setFormData({ ...formData, areaProyecto: Number(e.target.value) })}
             className="border p-2 rounded" 
             required 
           />
@@ -176,29 +199,17 @@ const AdminPanel = () => {
             setItems={(items) => setFormData({ ...formData, colaboradores: items })} 
           />
 
-          <RecorridoVirtual 
-            recorridoVirtual={formData.recorridoVirtual} 
-            previewRecorrido={formData.previewRecorrido} 
-            hostspots={formData.hostspots} 
+          <RecorridoVirtual recorridoVirtual={formData.recorridoVirtual} previewRecorrido={formData.previewRecorrido} hostspots={formData.hostspots} 
             setRecorridoVirtual={(recorridoVirtual) => setFormData({ ...formData, recorridoVirtual })} 
             setPreviewRecorrido={(previewRecorrido) => setFormData({ ...formData, previewRecorrido })} 
             setHostspots={(hostspots) => setFormData({ ...formData, hostspots })} 
           />
 
-          <EstadoProyecto 
-            estado={formData.estado} 
-            setEstado={(estado) => setFormData({ ...formData, estado })} 
-          />
+          <EstadoProyecto estado={formData.estado} setEstado={(estado) => setFormData({ ...formData, estado })} />
         </>
       )}
 
-      <button
-        type="button"
-        onClick={handleSubmit}
-        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-      >
-        Subir {tipo}
-      </button>
+      <button type="button" onClick={handleSubmit} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Subir {tipo}</button>
     </div>
   );
 };
