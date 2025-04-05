@@ -7,10 +7,7 @@ const Navbar = () => {
       <div className="flex gap-4">
         <Link to="/" className="hover:underline">Inicio</Link>
         <Link to="/proyectos" className="hover:underline">Proyectos</Link>
-        <Link to="/admin" className="bg-blue-500 px-4 py-2 rounded hover:bg-blue-600">
-          Panel de Control
-        </Link>
-      </div>
+        </div>
     </nav>
   );
 };
