@@ -101,18 +101,18 @@ const Register: React.FC = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (window.grecaptcha) {
+      if (typeof window !== "undefined" && typeof window.grecaptcha !== "undefined") {
         window.grecaptcha.render("recaptcha-container", {
-          sitekey: "6LeR7SUrAAAAANRjCMuWP-xHuckuKUe6TKHeae_G", // Tu SiteKey
+          sitekey: "6LeR7SUrAAAAANRjCMuWP-xHuckuKUe6TKHeae_G",
           callback: (token: string) => {
             onRecaptchaChange(token);
           },
         });
       }
     }, 500);
-
+  
     return () => clearTimeout(timer);
-  }, []);
+  }, []);  
 
   const loginWithGoogle = async () => {
     const { error } = await supabase.auth.signInWithOAuth({
@@ -187,6 +187,7 @@ const Register: React.FC = () => {
 
         <button
           type="button"
+          disabled={loading}
           onClick={loginWithGoogle}
           style={{
             backgroundColor: "#4285F4",
@@ -202,6 +203,7 @@ const Register: React.FC = () => {
 
         <button
           type="button"
+          disabled={loading}
           onClick={loginWithGitHub}
           style={{
             backgroundColor: "black",
