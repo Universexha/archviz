@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "../supabaseClient";
@@ -59,6 +60,18 @@ const Navbar = () => {
           </div>
         )}
       </div>
+=======
+import { Link } from "react-router-dom";
+
+const Navbar = () => {
+  return (
+    <nav className="bg-gray-900 text-white p-4 flex justify-between items-center">
+      <h1 className="text-xl font-bold">ARCHVIZ</h1>
+      <div className="flex gap-4">
+        <Link to="/" className="hover:underline">Inicio</Link>
+        <Link to="/proyectos" className="hover:underline">Proyectos</Link>
+        </div>
+>>>>>>> 224b53fdcdb6d82fc15c2c267c79aef87cb3dc4d
     </nav>
   );
 };

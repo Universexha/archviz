@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
 
+declare global {
+  interface Window {
+    grecaptcha: {
+      render: (containerId: string, parameters: any) => void;
+      getResponse: () => string;
+      reset: () => void;
+    };
+  }
+}
+
 const Register: React.FC = () => {
   const [formData, setFormData] = useState({
     nombre: "",

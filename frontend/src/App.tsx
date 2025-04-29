@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Cursos from "./pages/Cursos";
@@ -20,7 +21,27 @@ function App() {
         <Route path="/verify-code" element={<VerifyCode />} />
       </Routes>
     </Router>
+=======
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import HeroSection from "./components/HeroSection";
+import Projects from "./components/Projects";
+
+function App() {
+  return (
+    <div>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<HeroSection />} />
+        <Route path="/proyectos" element={<Projects />} />
+      </Routes>
+    </div>
+>>>>>>> 224b53fdcdb6d82fc15c2c267c79aef87cb3dc4d
   );
 }
 
 export default App;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 224b53fdcdb6d82fc15c2c267c79aef87cb3dc4d
